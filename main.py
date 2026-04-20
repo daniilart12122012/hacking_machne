@@ -56,38 +56,40 @@ def shift_cols(state):
         new_row.append(rows[2])
         new_state.append(new_row)
     return new_state
-def xorik(state, key):
+def xor(state, key):
     new_state = []
     for row in state:
         new_row = []
         for num in row:
-            new_row.append(num^key[row.index(num)])
+            new_row.append(num^key[state.index(row)][row.index(num)])
         new_state.append(new_row)
     return new_state
 def final(state, r_k):
     f_res = S_box(state)
     s_res = shift_rows(f_res)
     th_res = shift_cols(s_res)
-    fth_res = xorik(th_res, r_k)
+    fth_res = xor(th_res, r_k)
     print('Result is:')
-    print(fth_res)
+    for row in fth_res:
+        for byte in row:
+            print(hex(byte), end=' ')
+        print('/n')
 print('Hello! You are using hacking_machine.')
 print('Please, choose a function:')
 print('AES, P_box, S_box, XOR, ROT')
 a = input()
 if (a == 'AES'):
-    state = [
-        [0x19, 0xa0, 0x9a, 0xe9],
-        [0x3d, 0xf4, 0xc6, 0xf8],
-        [0xe3, 0xe2, 0x8d, 0x48],
-        [0xbe, 0x2b, 0x2a, 0x08]
-    ]
-    r_k = [
-        0x2A, 0x7F, 0xB3, 0x4C,
-        0x9E, 0x1D, 0xF6, 0x58,
-        0xA4, 0x3B, 0xC7, 0x82,
-        0x6E, 0xD1, 0x95, 0x0F
-        ]
+    print('Now you have to enter your state to encode.')
+    print('There will be four lines with four decimal bytes in each.')
+    state = []
+    for i in range(4):
+        row = list(map(int, input().split()))
+        state.append(row)
+    r_k = []
+    print('Then enter your key using the same format')
+    for i in range(4):
+        key_row = list(map(int, input().split()))
+        r_k.append(key_row)
     final(state, r_k)
 elif (a == S_box):
     print('Result is:')
