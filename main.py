@@ -1,3 +1,5 @@
+from math import gcd
+from random import randint
 S_BOX = [
     0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b,
     0xfe, 0xd7, 0xab, 0x76, 0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
@@ -74,23 +76,47 @@ def final(state, r_k):
         for byte in row:
             print(hex(byte), end=' ')
         print('/n')
+def rsa(p = randint(100, 100000), q = randint(100, 100000)):
+    n = p*q
+    phi_n = (p-1)*(q-1)
+    e = 0
+    while gcd(e, phi_n) != 1:
+        e = randint(2, phi_n - 1)
+    d = 0
+    while (e*d)%phi_n != 1:
+        d += 1
+    pub_key = [e, n]
+    priv_key = [d, n]
+    print("Public key:")
+    print(pub_key)
+    print("Private key:")
+    print(priv_key)
 print('Hello! You are using hacking_machine.')
 print('Please, choose a function:')
-print('AES, P_box, S_box, XOR, ROT')
-a = input()
-if (a == 'AES'):
-    print('Now you have to enter your state to encode.')
-    print('There will be four lines with four decimal bytes in each.')
-    state = []
-    for i in range(4):
-        row = list(map(int, input().split()))
-        state.append(row)
-    r_k = []
-    print('Then enter your key using the same format')
-    for i in range(4):
-        key_row = list(map(int, input().split()))
-        r_k.append(key_row)
-    final(state, r_k)
-elif (a == S_box):
-    print('Result is:')
-    print(S_box(state)) 
+print('AES, P_box, S_box, XOR, ROT, RSA_key_gen')
+a = ""
+while a != "exit":
+    a = input()
+    if (a == 'AES'):
+        print('Now you have to enter your state to encode.')
+        print('There will be four lines with four decimal bytes in each.')
+        state = []
+        for i in range(4):
+            row = list(map(int, input().split()))
+            state.append(row)
+        r_k = []
+        print('Then enter your key using the same format')
+        for i in range(4):
+            key_row = list(map(int, input().split()))
+            r_k.append(key_row)
+        final(state, r_k)
+    elif (a == S_box):
+        print("I haven't prepaired it yet") 
+    elif (a == "RSA_key_gen"):
+        print('Enter prime number p or skip this step')
+        p = int(input())
+        print('Enter prime number q or skip this step')
+        q = int(input())
+        print('Key generation started...')
+        rsa(p, q)
+        print("!Use these keys only for education, they are not safe enough to use in real tasks!")
