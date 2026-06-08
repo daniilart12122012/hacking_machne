@@ -41,6 +41,11 @@ def S_box(state):
             new_row.append(S_BOX[byte])
         new_state.append(new_row)
     return new_state
+def S_bo_x(state):
+    new_state = ''
+    for byte in state:
+        new_state += S_BOX[ord(byte)]
+    return new_state
 def shift_rows(state):
     new_state = []
     for i in range(4):
@@ -111,12 +116,14 @@ while a != "exit":
             r_k.append(key_row)
         final(state, r_k)
     elif (a == S_box):
-        print("I haven't prepaired it yet") 
+        print('Enter your text')
+        c = input()
+        print(S_bo_x(c))
     elif (a == "RSA_key_gen"):
-        print('Enter prime number p or skip this step')
+        print('Enter prime number p')
         p = int(input())
-        print('Enter prime number q or skip this step')
+        print('Enter prime number q')
         q = int(input())
         print('Key generation started...')
         rsa(p, q)
-        print("!Use these keys only for education, they are not safe enough to use in real tasks!")
+      print("!Use these keys only for education, they are not safe enough to use in real tasks!")
