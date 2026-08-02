@@ -41,11 +41,6 @@ def S_box(state):
             new_row.append(S_BOX[byte])
         new_state.append(new_row)
     return new_state
-def S_bo_x(state):
-    new_state = ''
-    for byte in state:
-        new_state += S_BOX[ord(byte)]
-    return new_state
 def shift_rows(state):
     new_state = []
     for i in range(4):
@@ -96,6 +91,16 @@ def rsa(p = randint(100, 100000), q = randint(100, 100000)):
     print(pub_key)
     print("Private key:")
     print(priv_key)
+def pbox(key, text):
+    new_line = ""
+    cnt = 0
+    for i in range(len(text)):
+        if cnt > len(key):
+            cnt = 0
+        new_line += text[key[cnt]-1]
+        cnt += 1
+    return new_line
+    
 print('Hello! You are using hacking_machine.')
 print('Please, choose a function:')
 print('AES, P_box, S_box, XOR, ROT, RSA_key_gen')
@@ -115,15 +120,17 @@ while a != "exit":
             key_row = list(map(int, input().split()))
             r_k.append(key_row)
         final(state, r_k)
-    elif (a == S_box):
-        print('Enter your text')
-        c = input()
-        print(S_bo_x(c))
     elif (a == "RSA_key_gen"):
-        print('Enter prime number p')
+        print('Enter prime number p or skip this step')
         p = int(input())
-        print('Enter prime number q')
+        print('Enter prime number q or skip this step')
         q = int(input())
         print('Key generation started...')
         rsa(p, q)
-      print("!Use these keys only for education, they are not safe enough to use in real tasks!")
+        print("!Use these keys only for education, they are not safe enough to use in real tasks!")
+    elif a == "P_box":
+        print("Enter your key to list")
+        key = list(map(int,input().split()))
+        print("Enter your text now")
+        text = input()
+        print(pbox(key, text))
