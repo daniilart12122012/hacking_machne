@@ -60,10 +60,10 @@ def shift_cols(state):
     return new_state
 def xor(state, key):
     new_state = []
-    for row in state:
+    for i, row in enumerate(state):
         new_row = []
-        for num in row:
-            new_row.append(num^key[state.index(row)][row.index(num)])
+        for j, num in enumerate(row):
+            new_row.append(num ^ key[i][j])
         new_state.append(new_row)
     return new_state
 def final(state, r_k):
@@ -75,7 +75,7 @@ def final(state, r_k):
     for row in fth_res:
         for byte in row:
             print(hex(byte), end=' ')
-        print('/n')
+        print('\n')
 def rsa(p = randint(100, 100000), q = randint(100, 100000)):
     n = p*q
     phi_n = (p-1)*(q-1)
@@ -95,7 +95,7 @@ def pbox(key, text):
     new_line = ""
     cnt = 0
     for i in range(len(text)):
-        if cnt > len(key):
+        if cnt >= len(key):
             cnt = 0
         new_line += text[key[cnt]-1]
         cnt += 1
